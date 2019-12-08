@@ -1,4 +1,3 @@
-from os.path import getsize
 import socket
 from sys import stdout
 from threading import Thread
@@ -24,6 +23,7 @@ class Sender(Thread):
         sock.send(filename_len)
         sock.send(filename_send.encode())
 
+        from os.path import getsize
         self.size = getsize(self.name)
 
         self.bytes_sent = 0
@@ -66,9 +66,11 @@ def print_progress_bar(title: str, progress: float):
 def main():
     given = [str(i) for i in input().split()]
     files = given[0:-2]
+    given[-1] = int(given[-1])
+    addr = tuple(given[-2:])
     to_send = []
     for i in files:
-        sender = Sender(i, (given[-2], 22039))
+        sender = Sender(i, addr)
         sender.start()
         to_send.append(sender)
 
@@ -88,4 +90,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
