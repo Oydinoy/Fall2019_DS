@@ -10,7 +10,7 @@ class Downloader(Thread):
         self.addr: (str, int) = address
         self.__stop_event: Event = stop_event
 
-        print(address + "is connected")
+        print(address[0] + " is connected")
 
     def __receive_file_name(self) -> str:
         length = self.connect.recv(4)
@@ -43,7 +43,7 @@ class Downloader(Thread):
                 data = self.connect.recv(1024)
         self.connect.shutdown(socket.SHUT_RD)
         self.connect.close()
-        print(filename + 'has been successfully downloaded.')
+        print(filename + ' has been successfully downloaded.')
 
 
     def run(self):

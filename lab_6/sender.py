@@ -1,3 +1,4 @@
+from os.path import getsize
 import socket
 from sys import stdout
 from threading import Thread
@@ -23,7 +24,6 @@ class Sender(Thread):
         sock.send(filename_len)
         sock.send(filename_send.encode())
 
-        from os.path import getsize
         self.size = getsize(self.name)
 
         self.bytes_sent = 0
@@ -58,19 +58,17 @@ def print_progress_bar(title: str, progress: float):
         title_out = title + ' ' * (20 - len(title))
     progress_int = int(progress // 2)
     left_int = 50 - progress_int
-    out = '%s  |%s%s|  %3.f%%\n' % (title_out, '.' * progress_int, '_' * left_int, progress)
+    out = '%s  |%s%s|  %3.f%%\n' % (title_out, '*' * progress_int, '_' * left_int, progress)
     stdout.write(out)
     stdout.flush()
 
 
 def main():
     given = [str(i) for i in input().split()]
-    files = given[1:-2]
-    given[-1] = int(given[-1])
-    addr = tuple(given[-2:])
+    files = given[0:-2]
     to_send = []
     for i in files:
-        sender = Sender(i, addr)
+        sender = Sender(i, (given[-2], 22039))
         sender.start()
         to_send.append(sender)
 
@@ -90,3 +88,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
