@@ -57,7 +57,7 @@ class Waiter(Thread):
         self.__stop_event = Event()
 
     def run(self):
-        self.sock.bind(('', 20123))
+        self.sock.bind(('', 22039))
         self.sock.listen(8)
         print('Maybe anyone wants to send anything? Lets wait')
         while not self.__stop_event.is_set():
